@@ -1,16 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace samotnik {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : Window {
-		private Button?[,] map;
-		private Ellipse?[,] ellipses;
+		TabControl mainTabControl;
+		//private Button?[,] map;
+		//private Ellipse?[,] ellipses;
 		private readonly Grid grid;
+
+		private GameGrid gameGrid;
 
 		public MainWindow() {
 			InitializeComponent();
@@ -19,6 +20,10 @@ namespace samotnik {
 			grid = new Grid();
 			this.Content = grid;
 			grid.ShowGridLines = true;
+
+			gameGrid = new GameGrid(grid);
+			gameGrid.InitMap(InitialMapState.defaultMap);
+			/*
 			InitMap(
 				new int[,] {
 					{ 0, 0, 1, 1, 1, 0, 0 },
@@ -38,8 +43,11 @@ namespace samotnik {
 					{ 0, 0, 1, 1, 1, 0, 0 },
 					{ 0, 0, 1, 1, 1, 0, 0 }
 				});
+				*/
 		}
-
+		
+		
+/*
 		Button AddButton(int x, int y, RoutedEventHandler o) {
 			Button b = new Button();
 			map[x, y] = b;
@@ -180,6 +188,6 @@ namespace samotnik {
 				grid.Children.Clear();
 				ellipses = null;
 			}
-		}
+		}*/
 	}
 }

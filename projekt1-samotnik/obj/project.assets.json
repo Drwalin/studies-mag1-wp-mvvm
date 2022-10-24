@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\studies\\pladotnet\\studies_pladotnet\\projekt1-samotnik\\samotnik.csproj",
+      "projectUniqueName": "C:\\studies\\pladotnet\\projekty\\projekt1-samotnik\\samotnik.csproj",
       "projectName": "samotnik",
-      "projectPath": "C:\\studies\\pladotnet\\studies_pladotnet\\projekt1-samotnik\\samotnik.csproj",
+      "projectPath": "C:\\studies\\pladotnet\\projekty\\projekt1-samotnik\\samotnik.csproj",
       "packagesPath": "C:\\Users\\drwalin\\.nuget\\packages\\",
-      "outputPath": "C:\\studies\\pladotnet\\studies_pladotnet\\projekt1-samotnik\\obj\\",
+      "outputPath": "C:\\studies\\pladotnet\\projekty\\projekt1-samotnik\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\drwalin\\AppData\\Roaming\\NuGet\\NuGet.Config",
