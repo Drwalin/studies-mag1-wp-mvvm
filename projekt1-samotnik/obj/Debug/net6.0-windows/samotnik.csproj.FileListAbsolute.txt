@@ -62,3 +62,6 @@ C:\studies\pladotnet\projekty\projekt1-samotnik\obj\Debug\net6.0-windows\samotni
 C:\studies\pladotnet\projekty\projekt1-samotnik\obj\Debug\net6.0-windows\samotnik.genruntimeconfig.cache
 C:\studies\pladotnet\projekty\projekt1-samotnik\obj\Debug\net6.0-windows\ref\samotnik.dll
 C:\studies\pladotnet\projekty\projekt1-samotnik\obj\Debug\net6.0-windows\App.baml
+C:\studies\pladotnet\projekty\projekt1-samotnik\obj\Debug\net6.0-windows\GameBoard.g.cs
+C:\studies\pladotnet\projekty\projekt1-samotnik\obj\Debug\net6.0-windows\GameBoard.baml
+C:\studies\pladotnet\projekty\projekt1-samotnik\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs

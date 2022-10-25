@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -9,13 +8,13 @@ namespace samotnik;
 public class PawnPlace {
 	private Button button;
 	private Ellipse ellipse;
-	private GameGrid gameGrid;
+	private GameBoard gameBoard;
 	private Grid grid;
 	public readonly int x, y;
 
-	public PawnPlace(GameGrid gameGrid, int x, int y) {
-		this.gameGrid = gameGrid;
-		grid = gameGrid.GetGrid();
+	public PawnPlace(GameBoard gameBoard, int x, int y) {
+		this.gameBoard = gameBoard;
+		grid = gameBoard.GetGrid();
 		this.x = x;
 		this.y = y;
 		
@@ -26,7 +25,7 @@ public class PawnPlace {
 		Grid.SetColumn(button, x);
 		Grid.SetRow(button, y);
 		button.Click += OnClick;
-		
+
 		ellipse = new Ellipse();
 		ellipse.Height = 24;
 		ellipse.Width = 24;
@@ -70,6 +69,6 @@ public class PawnPlace {
 	}
 
 	void OnClick(object o, RoutedEventArgs args) {
-		gameGrid.OnClick(this, args);
+		gameBoard.OnClick(this, args);
 	}
 }

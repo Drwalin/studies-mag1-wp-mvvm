@@ -3,8 +3,10 @@
 public class InitialMapState {
 	public readonly int[,] places;
 	public readonly int[,] pawns;
+	public readonly string name;
 
-	public InitialMapState(int[,] places, int[,] pawns) {
+	public InitialMapState(string name, int[,] places, int[,] pawns) {
+		this.name = name;
 		this.places = places;
 		this.pawns = pawns;
 	}
@@ -18,7 +20,8 @@ public class InitialMapState {
 	}
 
 	public static readonly InitialMapState defaultMap = new InitialMapState(
-		new int[,] {
+		"Normal board",
+		new[,] {
 			{ 0, 0, 1, 1, 1, 0, 0 },
 			{ 0, 0, 1, 1, 1, 0, 0 },
 			{ 1, 1, 1, 1, 1, 1, 1 },
@@ -27,7 +30,7 @@ public class InitialMapState {
 			{ 0, 0, 1, 1, 1, 0, 0 },
 			{ 0, 0, 1, 1, 1, 0, 0 }
 		},
-		new int[,] {
+		new[,] {
 			{ 0, 0, 1, 1, 1, 0, 0 },
 			{ 0, 0, 1, 1, 1, 0, 0 },
 			{ 1, 1, 1, 1, 1, 1, 1 },
@@ -37,4 +40,26 @@ public class InitialMapState {
 			{ 0, 0, 1, 1, 1, 0, 0 }
 		});
 	
+	public static readonly InitialMapState easyMap = new InitialMapState(
+		"Easy board",
+		new[,] {
+			{ 0, 0, 1, 1, 1, 0, 0 },
+			{ 0, 1, 1, 1, 1, 1, 0 },
+			{ 1, 1, 1, 1, 1, 1, 1 },
+			{ 1, 1, 1, 1, 1, 1, 1 },
+			{ 1, 1, 1, 1, 1, 1, 1 },
+			{ 0, 1, 1, 1, 1, 1, 0 },
+			{ 0, 0, 1, 1, 1, 0, 0 }
+		},
+		new[,] {
+			{ 0, 0, 1, 1, 0, 0, 0 },
+			{ 0, 0, 1, 1, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 1, 1, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 1, 1, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0 }
+		});
+
+	public static readonly InitialMapState[] internalMaps = { defaultMap, easyMap };
 }

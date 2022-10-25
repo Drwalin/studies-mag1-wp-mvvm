@@ -1,25 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Shapes;
 
-namespace samotnik;
+namespace samotnik; 
 
-public class GameGrid {
+public partial class GameBoard {
+	
 	struct PawnPair {
-		public PawnPlace from, to, middle;
+		public PawnPlace from, to;
+		public PawnPlace? middle;
 	}
 
-	private PawnPlace[,] pawns;
+	private PawnPlace?[,] pawns;
 	private readonly Grid grid;
-	private List<PawnPair> history = new();
+	private readonly List<PawnPair> history = new();
+	private InitialMapState lastStartedGameMap = InitialMapState.defaultMap;
 
-	public GameGrid(Grid grid) {
-		this.grid = grid;
+	public GameBoard() {
+		InitializeComponent();
+		grid = new Grid();
+		Content = grid;
+		grid.ShowGridLines = true;
+	}
+
+	public void ResetGame() {
+		InitMap(lastStartedGameMap);
 	}
 
 	public void InitMap(InitialMapState initialState) {
+		lastStartedGameMap = initialState;
 		history.Clear();
 		grid.Children.Clear();
 		grid.RowDefinitions.Clear();
@@ -36,14 +45,14 @@ public class GameGrid {
 				if(initialState.places[x, y] == 1) {
 					pawns[x, y] = new PawnPlace(this, x, y);
 					if(initialState.pawns[x, y] == 1) {
-						pawns[x, y].SetEnabled(true);
+						pawns[x, y]?.SetEnabled(true);
 					}
 				}
 			}
 		}
 	}
 
-	private PawnPlace lastClickedPawn = null;
+	private PawnPlace? lastClickedPawn;
 
 	public void OnClick(PawnPlace pawn, RoutedEventArgs args) {
 		if(pawn == lastClickedPawn) {
@@ -68,26 +77,37 @@ public class GameGrid {
 	private void DoMove(PawnPlace from, PawnPlace to) {
 		int x = (to.x + from.x) / 2;
 		int y = (to.y + from.y) / 2;
-		PawnPlace middle = pawns[x, y];
+		PawnPlace? middle = pawns[x, y];
 		if(middle != null && middle.GetEnabled()) {
 			history.Add(new PawnPair { from = from, to = to, middle = middle });
 			middle.SetEnabled(false);
 			PlayAnimation(from, to);
 			lastClickedPawn = null;
 		}
+
+		if(IsEnd()) {
+			MessageBox.Show(Window.GetWindow(this),
+				IsWin() ? "You won!" : "You loose!");
+		}
 	}
 
 	public void UndoMove() {
 		if(history.Count > 0) {
-			var last = history[history.Count - 1];
+			var last = history[^1];
 			last.to.SetEnabled(false);
 			last.from.SetEnabled(true);
-			last.middle.SetEnabled(true);
+			last.middle?.SetEnabled(true);
 			if(lastClickedPawn == last.to || lastClickedPawn == last.from
 			                              || lastClickedPawn == last.middle) {
 				lastClickedPawn = null;
 			}
+
+			history.Remove(last);
 		}
+	}
+
+	public bool CanUndo() {
+		return history.Count > 0;
 	}
 
 	private void PlayAnimation(PawnPlace from, PawnPlace to) {
@@ -102,29 +122,29 @@ public class GameGrid {
 	}
 
 
-	public bool IsEnd() {
+	private bool IsEnd() {
 		foreach(var it in pawns) {
-			if(it.GetEnabled() == true) {
-				int[,] moves = new int[,] {
+			if(it?.GetEnabled() == true) {
+				int[,] moves = {
 					{ 2, 0 },
 					{ 0, 2 },
 				};
-				for(int i = 0; i < moves.Length; ++i) {
-					try {
+				for(int i = 0; i < moves.GetLength(0); ++i) {
+					if(it.x + moves[i, 0] < pawns.GetLength(0)
+					   && it.y + moves[i, 1] < pawns.GetLength(1)) {
 						var p = pawns[it.x + moves[i, 0], it.y + moves[i, 1]];
 						if(p != null) {
-							if(it.GetEnabled() ^ p.GetEnabled()) {
+							if(it.GetEnabled() != p.GetEnabled()) {
 								int x = (p.x + it.x) / 2;
 								int y = (p.y + it.y) / 2;
 								var middle = pawns[x, y];
 								if(middle != null) {
-									if(middle.GetEnabled() == true) {
+									if(middle.GetEnabled()) {
 										return false;
 									}
 								}
 							}
 						}
-					} catch {
 					}
 				}
 			}
@@ -133,10 +153,10 @@ public class GameGrid {
 		return true;
 	}
 
-	public bool IsWin() {
+	private bool IsWin() {
 		int sum = 0;
 		foreach(var it in pawns) {
-			if(it.GetEnabled() == true) {
+			if(it?.GetEnabled() == true) {
 				sum++;
 			}
 		}
@@ -148,3 +168,4 @@ public class GameGrid {
 		return false;
 	}
 }
+
