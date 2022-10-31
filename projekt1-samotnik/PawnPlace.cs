@@ -7,7 +7,7 @@ namespace samotnik;
 
 public class PawnPlace {
 	private Button button;
-	private Ellipse ellipse;
+	public Ellipse ellipse;
 	private GameBoard gameBoard;
 	private Grid grid;
 	public readonly int x, y;
@@ -19,12 +19,14 @@ public class PawnPlace {
 		this.y = y;
 		
 		button = new Button();
-		button.Height = 32;
-		button.Width = 32;
+		button.Height = 36;
+		button.Width = 36;
 		grid.Children.Add(button);
 		Grid.SetColumn(button, x);
 		Grid.SetRow(button, y);
 		button.Click += OnClick;
+		button.Template = (ControlTemplate)gameBoard.FindResource("ButtonTemplate");
+//		button.Style = (Style)gameBoard.FindResource("styleWithTrigger");
 
 		ellipse = new Ellipse();
 		ellipse.Height = 24;
@@ -33,7 +35,7 @@ public class PawnPlace {
 		Grid.SetColumn(ellipse, x);
 		Grid.SetRow(ellipse, y);
 		ellipse.IsHitTestVisible = false;
-		
+
 		SetEnabled(false);
 	}
 

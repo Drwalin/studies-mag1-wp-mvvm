@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace samotnik; 
 
@@ -66,6 +68,8 @@ public partial class GameBoard {
 		} else if(pawn.GetEnabled() == false) {
 			if(lastClickedPawn.IsDistanceRight(pawn)) {
 				DoMove(lastClickedPawn, pawn);
+				lastClickedPawn = pawn;
+				pawn.SetColor(true);
 			}
 		} else if(pawn.GetEnabled()) {
 			lastClickedPawn.SetColor(false);
@@ -91,6 +95,27 @@ public partial class GameBoard {
 		}
 	}
 
+	private void PlayAnimation(PawnPlace from, PawnPlace to) {
+		// TODO: add animation
+		from.SetEnabled(false);
+		to.SetEnabled(true);
+
+
+		bool rows = (from.x != to.x);
+
+		Storyboard? storyboard = this.FindResource(rows?"EllipseRowAnimation":"EllipseColumnAnimation") as Storyboard;
+		var timeline = storyboard?.Children as TimelineCollection;
+		Int32Animation ia = timeline[0] as Int32Animation;
+		
+		ia.From = rows ? from.y : from.x;
+		ia.To = rows ? to.y : to.x;
+
+		//timeline[0] = ia;
+
+		Storyboard.SetTarget(storyboard, to.ellipse);
+		storyboard.Begin();
+	}
+
 	public void UndoMove() {
 		if(history.Count > 0) {
 			var last = history[^1];
@@ -108,12 +133,6 @@ public partial class GameBoard {
 
 	public bool CanUndo() {
 		return history.Count > 0;
-	}
-
-	private void PlayAnimation(PawnPlace from, PawnPlace to) {
-		// TODO: add animation
-		from.SetEnabled(false);
-		to.SetEnabled(true);
 	}
 
 

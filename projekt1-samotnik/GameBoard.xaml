@@ -5,7 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:samotnik"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="600">
+    
+    <UserControl.Resources>
+        <Storyboard x:Key="EllipseRowAnimation" Storyboard.TargetProperty="(Grid.Row)">
+            <Int32Animation From="0" To="2" Duration="0:0:10"/>
+        </Storyboard>
+        <Storyboard x:Key="EllipseColumnAnimation" Storyboard.TargetProperty="(Grid.Column)">
+            <Int32Animation From="0" To="2" Duration="0:0:1"/>
+        </Storyboard>
+        
+    </UserControl.Resources>
+    
+    
     <Grid>
         
     </Grid>

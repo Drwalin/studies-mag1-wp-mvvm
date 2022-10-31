@@ -9,8 +9,6 @@ namespace samotnik {
 
 		public MainWindow() {
 			InitializeComponent();
-
-			//Height = 620;
 			
 			foreach(var e in (Content as Grid)?.Children) {
 				if(e is GameBoard board) {
