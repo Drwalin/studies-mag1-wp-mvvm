@@ -8,13 +8,12 @@ public class CommandKill : ListViewCommandBase {
 	}
 
 	public override void Execute(object? parameter) {
-		viewModelProcessList.Process?.Kill();
-		viewModelProcessList.process = null;
-		viewModelProcessList.Process = null;
-		viewModelProcessList.UpdateList();
-	}
-
-	public virtual bool CanExecute(object? parameter) {
-		return viewModelProcessList.Process != null;
+		try {
+			viewModelProcessList.Process?.Kill();
+			viewModelProcessList.process = null;
+			viewModelProcessList.Process = null;
+			viewModelProcessList.UpdateList();
+		} catch {
+		}
 	}
 }

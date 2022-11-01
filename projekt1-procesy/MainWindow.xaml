@@ -144,15 +144,33 @@
 			<Grid Grid.Row="0">
 				<Grid.ColumnDefinitions>
 					 <ColumnDefinition Width="200" />
-					 <ColumnDefinition Width="100" />
+					 <ColumnDefinition Width="80" />
+					 <ColumnDefinition />
 				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					 <RowDefinition Height="40" />
+					 <RowDefinition />
+				</Grid.RowDefinitions>
 				
-				<TextBlock Grid.Column="0" Text="{Binding Process.ProcessName}" />
-				<Button Grid.Column="1" Command="{Binding CommandKill}">
-					<TextBlock>
-						Kill
-					</TextBlock>
+				<Grid Grid.Column="0" Grid.Row="0">
+					 <Grid.ColumnDefinitions>
+						   <ColumnDefinition />
+						   <ColumnDefinition />
+					 </Grid.ColumnDefinitions>
+					 <TextBlock Grid.Column="0" HorizontalAlignment="Center" Text="{Binding Process.ProcessName}" />
+					 <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="{Binding Process.Id}" />
+				</Grid>
+				
+				<Button Grid.Column="1" Grid.Row="0" Command="{Binding CommandKill}">
+					<TextBlock Text="Kill" />
 				</Button>
+				<Button Grid.Column="2" Grid.Row="0" Command="{Binding CommandPriorityChange}">
+					<StackPanel>
+						<TextBlock Text="Priority: " />
+						<TextBlock Text="{Binding ProcessPriorityText}" />
+					</StackPanel>
+				</Button>
+				
 			</Grid>
 			
 			
@@ -160,8 +178,7 @@
 					  ItemsSource="{Binding Path=ChildProcessesCollection}"
 					  VerticalContentAlignment="Top"
 					  ScrollViewer.VerticalScrollBarVisibility="Visible"
-					  ScrollViewer.CanContentScroll="True"
-					  SelectionMode="Single">
+					  ScrollViewer.CanContentScroll="True">
 				<ListView.ItemContainerStyle>
 					<Style TargetType="ListViewItem">
 						<Setter Property="VerticalAlignment" Value="Top"></Setter>

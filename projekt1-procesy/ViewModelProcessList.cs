@@ -22,7 +22,8 @@ public class ViewModelProcessList : INotifyPropertyChanged {
 		CommandRefresh = new CommandRefresh(this);
 		CommandSort = new CommandSort(this);
 		CommandKill = new CommandKill(this);
-
+		CommandPriorityChange = new CommandPriorityChange(this);
+			
 		Processes = new ObservableCollection<Process>();
 		ChildProcesses = new ObservableCollection<Process>();
 		SortProcesses("Id");
@@ -50,6 +51,41 @@ public class ViewModelProcessList : INotifyPropertyChanged {
 		if(w == null)
 			return true;
 		return false;
+	}
+	
+
+	public void UpdateProcessPriority() {
+		if(process != null) {
+			try {
+				switch(process.PriorityClass) {
+					case ProcessPriorityClass.Idle:
+						ProcessPriorityText = "Idle";
+						break;
+					case ProcessPriorityClass.BelowNormal:
+						ProcessPriorityText = "BelowNormal";
+						break;
+					case ProcessPriorityClass.Normal:
+						ProcessPriorityText = "Normal";
+						break;
+					case ProcessPriorityClass.AboveNormal:
+						ProcessPriorityText = "AboveNormal";
+						break;
+					case ProcessPriorityClass.High:
+						ProcessPriorityText = "High";
+						break;
+					case ProcessPriorityClass.RealTime:
+						ProcessPriorityText = "RealTime";
+						break;
+					default:
+						ProcessPriorityText = "[INVALID]";
+						break;
+				}
+			} catch {
+				ProcessPriorityText = "[ACCESS DENIED]";
+			}
+		} else {
+			ProcessPriorityText = "";
+		}
 	}
 	
 	
@@ -88,20 +124,21 @@ public class ViewModelProcessList : INotifyPropertyChanged {
 				}
 				Processes.Clear();
 				foreach(var process in allProcesses) {
-					if(process.ProcessName.ToLower()
-						.Contains(processFilter.ToLower())
-						|| processFilter == "") {
-						Processes.Add(process);
-					}
+					Processes.Add(process);
 				}
 				TriggerPorpertyChange("Processes");
 				TriggerPorpertyChange("ProcessesCollection");
 
-				UpdateChildList();
+				UpdateSelectedProcessData();
 			});
 	}
 
-    void UpdateChildList() {
+    void UpdateSelectedProcessData() {
+	    if(Process != null) {
+		    Process = Process.GetProcessById(Process.Id);
+	    }
+
+	    UpdateProcessPriority();
 		 ChildProcesses.Clear();
 		 if(Process != null) {
 			  foreach(var p in ProcessSelect.GetChildrenProcesses(Process)) {
@@ -124,7 +161,6 @@ public class ViewModelProcessList : INotifyPropertyChanged {
 				process = value;
 			}
 			TriggerPorpertyChange("Process");
-			//UpdateChildList();
 		}
 	}
 
@@ -166,6 +202,21 @@ public class ViewModelProcessList : INotifyPropertyChanged {
 			UpdateList();
 		}
 	}
+
+	
+
+	private string processPriority = "";
+
+	public string ProcessPriorityText {
+		get {
+			return processPriority;
+		}
+		set {
+			processPriority = value;
+			OnPropertyChanged("ProcessPriorityText");
+		}
+	}
+	
 	
 	
 	private string processFilter = "";
@@ -175,7 +226,15 @@ public class ViewModelProcessList : INotifyPropertyChanged {
 		}
 		set {
 			processFilter = value;
-			UpdateList();
+
+			ProcessesCollection.Filter = (object o) => {
+				if(o is Process p) {
+					return p.ProcessName.ToLower()
+						       .Contains(processFilter.ToLower())
+					       || processFilter == "";
+				}
+				return false;
+			};
 		}
 	}
 
@@ -193,17 +252,20 @@ public class ViewModelProcessList : INotifyPropertyChanged {
 	}
 
 
+	/*
 	public string ChosenProcessName {
 		get {
 			return this.process?.ProcessName;
 		}
 	}
+	*/
 	
 	public ICommand CommandFilter { get; set; }
 	public ICommand ClickAutoRefreshButton { get; set; }
 	public ICommand CommandRefresh { get; set; }
 	public ICommand CommandSort { get; set; }
 	public ICommand CommandKill { get; set; }
+	public ICommand CommandPriorityChange { get; set; }
 	
 	
 	
