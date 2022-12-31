@@ -1,20 +1,20 @@
 ﻿procesy
-
+1.0.0.0
 
 winexe
 C#
 .cs
-C:\studies\pladotnet\projekty\projekt1-procesy\obj\Debug\net6.0-windows\
+c:\studies\pladotnet\projekty\projekt1-procesy\obj\Debug\net6.0-windows\
 samotnik
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-C:\studies\pladotnet\projekty\projekt1-procesy\App.xaml
+c:\studies\pladotnet\projekty\projekt1-procesy\App.xaml
 11407045341
 
-11-1299289868
+13-731723161
 20160795083
 MainWindow.xaml;
 
-False
+True
 

@@ -45,13 +45,13 @@
 							</Grid.ColumnDefinitions>
 							
 							<TextBlock Grid.Column="0">Auto refresh:</TextBlock>
-							<TextBlock TextAlignment="Center" Grid.Column="2" Text="{Binding AutoRefresh}" />
+							<TextBlock TextAlignment="Center" Grid.Column="1" Text="{Binding AutoRefresh}" />
 						</Grid>
 					</Button.Content>
 					
 				</Button>
 				<xctk:IntegerUpDown
-					Grid.Column="4"
+					Grid.Column="3"
 					DefaultValue="1" Minimum="1" Maximum="60"
 					Value="{Binding RefreshRateSeconds}" />
 			</Grid>

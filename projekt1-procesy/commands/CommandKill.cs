@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace a; 
 
@@ -14,6 +15,9 @@ public class CommandKill : ListViewCommandBase {
 			viewModelProcessList.Process = null;
 			viewModelProcessList.UpdateList();
 		} catch {
+			MessageBox.Show(Application.Current.MainWindow,
+				"Access denied to kill: "
+				+ viewModelProcessList.Process?.ProcessName);
 		}
 	}
 }

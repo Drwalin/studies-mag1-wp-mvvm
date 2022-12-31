@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Windows;
 
 namespace a; 
 
@@ -35,6 +36,9 @@ public class CommandPriorityChange : ListViewCommandBase {
 
 				viewModelProcessList.UpdateProcessPriority();
 			} catch {
+				MessageBox.Show(Application.Current.MainWindow,
+					"Access denied to change priority: "
+					+ viewModelProcessList.Process?.ProcessName);
 			}
 		}
 	}
