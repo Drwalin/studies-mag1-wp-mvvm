@@ -3,13 +3,14 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>dotnet_test</RootNamespace>
+    <RootNamespace>procesy</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ElectronCgi.DotNet" Version="1.0.3" />
+    <PackageReference Include="System.Management" Version="7.0.0-rc.2.22472.3" />
   </ItemGroup>
 
 </Project>

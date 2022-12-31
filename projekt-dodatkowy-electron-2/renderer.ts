@@ -15,5 +15,10 @@ con.on("greeting_response", (e)=>{
 	document.getElementById('body').innerHTML += '</br>'+e;
 });
 
+con.on("update_main_process_list", (lst)=>{
+	document.getElementById('body').innerHTML += '</br>RECEIVED:';
+	document.getElementById('body').innerHTML += '</br>'+JSON.stringify(lst);
+});
+
 con.send("greeting", "Z renderera connection");
 
