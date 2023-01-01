@@ -1,29 +1,51 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="style.css" />
 	</head>
 	<body>
-		<div style="width:50vw; left: 0; display: inline-block;" id="body">
-			Div lewy
-
+		<div style="width:50vw; left:0; top:0;" id="div_left">
+			<div id="div_left_up" style="height:auto; top:0;">
+				<input id="filter_text_input">
+				<button id="refresh_button">Refresh</button>
+				<button id="auto_refresh_toggle_button">Auto refresh: true</button>
+				<div>
+					Refresh rate [s]:
+					<input id="refresh_rate_value_input" min="1" max="60" step="1" value="1">
+					<button id="increment_referesh_rate_button">+</button>
+					<button id="decrement_referesh_rate_button">-</button>
+				</div>
+			</div>
+			<div id="div_left_down" style="height:auto; bottom:0vh; padding: 8px 20px 8px 0; left: 0;">
+				<table id="main_list">
+					<tr><th>Company</th><th>Contact</th><th>Country</th></tr><tr><td>Alfreds Futterkiste</td><td>Maria Anders</td><td>Germany</td></tr><tr><td>Centro comercial Moctezuma</td><td>Francisco Chang</td><td>Mexico</td></tr>
+				</table>
+			</div>
 		</div>
-		<div style="width:50vw; position:fixed; right: 0; left: auto; display: inline-block;">
-			Div prawy
-			</br>
-			Div prawy
-			</br>
-			Div prawy
-			</br>
-			Div prawy
-			</br>
-			Div prawy
-			</br>
-			Div prawy
-			</br>
-			Div prawy
-			</br>
-
+		<div style="width:50vw; position:fixed; right: 0; left: auto; top:0;" id="div_right">
+			<div id="div_right_up" style="height:auto; top:0;">
+				<div style="width:30%; top:0;" id="selected_process_name">
+				</div>
+				<div style="width:15%; top:0;" id="selected_process_pid">
+				</div>
+				<button style="width:15%; right:40%; top:0;" id="kill_process_button" disabled="true">
+					Kill
+				</button>
+				<button style="width:40%; left:auto; right:0; top:0;" id="process_priority_button" disabled="true">
+					Priority:
+					<div id="process_priority_string">
+						fdsf
+					</div>
+				</button>
+			</div>
+			<div id="div_right_down" style="height:auto; bottom:0; padding: 8px;">
+				<table id="child_list">
+					<tr><th>Company</th><th>Contact</th><th>Country</th></tr><tr><td>Alfredsfdhjklsfjdksfajkdfja;fdfl;as;kfdaskl;fjkladjks;lafjk Futterkiste</td><td>Maria Anders</td><td>Germany</td></tr><tr><td>Centro comercial Moctezuma</td><td>Francisco Chang</td><td>Mexico</td></tr>
+				</table>
+			</div>
 		</div>
 	</body>
+	<script src="dist/init_con.js" > </script>
+	<script src="dist/list_renderer.js" > </script>
 	<script src="dist/renderer.js" > </script>
 </html>

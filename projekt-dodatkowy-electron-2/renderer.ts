@@ -1,24 +1,27 @@
 
-document.getElementById('body').innerHTML += '</br>Mleko!';
-
-const ipc = require('electron').ipcRenderer;
-const { ConnectionBuilder } = require('electron-cgi');
-
-const con = new ConnectionBuilder()
-	.connectTo('dotnet', 'run', '--project', 'procesy')
-	.build()
-con.onDisconnect = () => {
-	console.log('Lost connection to the .Net process');
-};
+//const ipc = require('electron').ipcRenderer;
 
 con.on("greeting_response", (e)=>{
-	document.getElementById('body').innerHTML += '</br>'+e;
-});
-
-con.on("update_main_process_list", (lst)=>{
-	document.getElementById('body').innerHTML += '</br>RECEIVED:';
-	document.getElementById('body').innerHTML += '</br>'+JSON.stringify(lst);
+	//document.getElementById('body').innerHTML += '</br>'+e;
 });
 
 con.send("greeting", "Z renderera connection");
 
+
+
+
+con.on("message_box", (msg)=>{
+	alert(msg);
+});
+
+con.on("update_main_process_list", (lst:any[])=>{
+	RenderList(lst, "main_list");
+});
+
+con.on("update_child_process_list", (lst:any[])=>{
+	RenderList(lst, "child_list");
+});
+
+con.on("update_selected_process", (process)=>{
+
+});
