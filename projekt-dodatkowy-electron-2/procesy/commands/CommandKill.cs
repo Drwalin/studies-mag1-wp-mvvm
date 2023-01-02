@@ -10,7 +10,7 @@ public class CommandKill : ListViewCommandBase {
 		try {
 			viewModelProcessList.process?.Kill();
 			viewModelProcessList.process = null;
-			viewModelProcessList.UpdateList();
+			viewModelProcessList.UpdateList(true);
 		} catch {
 			MessageBox.Show("Access denied to kill: "
 				+ viewModelProcessList.process?.ProcessName);
