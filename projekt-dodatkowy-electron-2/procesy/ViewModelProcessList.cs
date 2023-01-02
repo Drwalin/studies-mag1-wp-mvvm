@@ -34,8 +34,12 @@ public class ViewModelProcessList {
 		Con.connection.On("command_priority_change", ()=>{
 			new CommandPriorityChange(this).Execute(null);
 		});
+		Con.connection.On<string>("command_filter", (filter)=>{
+			processFilter = filter;
+			UpdateList(false);
+		});
 
-		Con.connection.On<long>("choose_process", (pid) => {
+		Con.connection.On<long>("choose_process", (pid)=>{
 			if(allProcesses == null)
 				return;
 			foreach(Process proc in allProcesses) {
@@ -45,6 +49,10 @@ public class ViewModelProcessList {
 				}
 			}
 			UpdateSelectedProcessData();
+		});
+
+		Con.connection.On<int>("refresh_rate", (value)=>{
+			refreshRate = value;
 		});
 			
 		SortProcesses("PID");
@@ -66,7 +74,7 @@ public class ViewModelProcessList {
 	}
 
 	public bool IsStop() {
-		return Con.IsConnected();
+		return !Con.IsConnected();
 	}
 	
 
@@ -107,7 +115,7 @@ public class ViewModelProcessList {
 	
     public void SortProcesses(string columnName) {
 		if(sortColumn == columnName) {
-			revertSortProcess = -1;
+			revertSortProcess *= -1;
 		} else {
 			revertSortProcess = 1;
 		}
@@ -123,90 +131,93 @@ public class ViewModelProcessList {
 			}
 			selectedProcesses.Clear();
 			foreach(Process p in allProcesses) {
-				selectedProcesses.Add(p);  
+				if(p.ProcessName.ToLower().Contains(processFilter.ToLower())) {
+					selectedProcesses.Add(p);
+				}
 			}
 
-			if(sortColumn == "Name") {
-				selectedProcesses.Sort((Process l, Process r)=>{
-					return revertSortProcess*l.ProcessName.CompareTo(r.ProcessName);
-				});
-			} else if(sortColumn == "Memory") {
-				selectedProcesses.Sort((Process l, Process r)=>{
-					return revertSortProcess * l.PagedMemorySize64.CompareTo(r.PagedMemorySize64);
-				});
-			} else if(sortColumn == "Time") {
-				selectedProcesses.Sort((Process l, Process r)=>{
-					TimeSpan a=new(), b=new();
-					try {
-						a = l.TotalProcessorTime;
-					} catch {}
-					try {
-						b = r.TotalProcessorTime;
-					} catch {}
-					return revertSortProcess*a.CompareTo(b);
-				});
-			} else { // PID
-				selectedProcesses.Sort((Process l, Process r)=>{
-					return revertSortProcess*l.Id.CompareTo(r.Id);
-				});
-			}
-			
+			Sort(selectedProcesses, sortColumn, revertSortProcess);
 			SendProcessesList("update_main_process_list", this.selectedProcesses);
-
-			UpdateSelectedProcessData();
 		}
+
+		UpdateSelectedProcessData();
+	}
+
+	static void Sort(List<Process> processes, string sortColumn, int revertSortProcess) {
+		if(sortColumn == "Name") {
+			processes.Sort((Process l, Process r)=>{
+				return revertSortProcess*l.ProcessName.CompareTo(r.ProcessName);
+			});
+		} else if(sortColumn == "Memory") {
+			processes.Sort((Process l, Process r)=>{
+				return revertSortProcess * l.PagedMemorySize64.CompareTo(r.PagedMemorySize64);
+			});
+		} else if(sortColumn == "Time") {
+			processes.Sort((Process l, Process r)=>{
+				TimeSpan a=new(), b=new();
+				try {
+					a = l.TotalProcessorTime;
+				} catch {}
+				try {
+					b = r.TotalProcessorTime;
+				} catch {}
+				return revertSortProcess*a.CompareTo(b);
+			});
+		} else { // PID or unknown column
+			processes.Sort((Process l, Process r)=>{
+				return revertSortProcess*l.Id.CompareTo(r.Id);
+			});
+		}
+
 	}
 
     void UpdateSelectedProcessData() {
-	    if(process != null) {
-		    process = Process.GetProcessById(process.Id);
-	    }
-
-	    UpdateProcessPriority();
-		childProcesses.Clear();
-		if(process != null) {
-			foreach(var p in ProcessSelect.GetChildrenProcesses(process)) {
-				childProcesses.Add(p);
+		lock(this) {
+			if(process != null) { // fetch process for it's updates
+				process = Process.GetProcessById(process.Id);
 			}
-		}
 
-		Con.connection.Send("process_priority", processPriority);
-		SendProcessesList("update_child_process_list", childProcesses);
+			UpdateProcessPriority();
+			childProcesses.Clear();
+			if(process != null) {
+				foreach(var p in ProcessSelect.GetChildrenProcesses(process)) {
+					childProcesses.Add(p);
+				}
+			}
+
+			Con.connection.Send("update_selected_process", new ProcessSimple(process));
+			SendProcessesList("update_child_process_list", childProcesses);
+		}
     }
 
 
 
 	struct ProcessSimple {
-		public int PID;
-		public string Name;
-		public double Time;
-		public long Memory;
-		public ProcessSimple(int pid, string name, double time, long memory) {
-			PID = pid;
-			Name = name;
-			Time = time;
-			Memory = memory;
+		public int pid = -1;
+		public string name = "";
+		public double time = -1;
+		public long memory = -1;
+		public bool empty = true;
+		public ProcessSimple(Process? proc) {
+			if(proc != null) {
+				empty = false;
+				try {
+					time = proc.TotalProcessorTime.TotalSeconds;
+				} catch {}
+				pid = proc.Id;
+				name = proc.ProcessName;
+				memory = proc.PagedMemorySize64;
+			}
 		}
 	}
 	void SendProcessesList(string channel, List<Process> processes) {
 		var lst = ConvertProcessesList(processes);
 		Con.connection.Send(channel, lst);
-		Console.Error.WriteLine("Sending: " + channel);
 	}
 	ProcessSimple[] ConvertProcessesList(List<Process> processes) {
 		var lst = new ProcessSimple[processes.Count];
 		for(int i=0; i<processes.Count; ++i) {
-			var p = processes[i];
-			double t = -1;
-			try {
-				t = p.TotalProcessorTime.TotalMilliseconds;
-			} catch {}
-			lst[i] = new ProcessSimple(
-				p.Id,
-				p.ProcessName,
-				t,
-				p.PagedMemorySize64
-			);
+			lst[i] = new ProcessSimple(processes[i]);
 		}
 		return lst;
 	}

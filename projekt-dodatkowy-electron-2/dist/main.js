@@ -9,11 +9,10 @@ var Main = /** @class */ (function () {
         }
     };
     Main.onClose = function () {
-        // Dereference the window object. 
-        Main.mainWindow = null;
+        Main.window = null;
     };
     Main.onReady = function () {
-        Main.mainWindow = new Main.BrowserWindow({
+        Main.window = new Main.BrowserWindow({
             width: 800,
             height: 600,
             webPreferences: {
@@ -23,9 +22,8 @@ var Main = /** @class */ (function () {
                 contextIsolation: false
             }
         });
-        Main.window = Main.mainWindow;
-        Main.mainWindow.loadURL('file://' + __dirname + '/../index.html');
-        Main.mainWindow.on('closed', Main.onClose);
+        Main.window.loadURL('file://' + __dirname + '/../index.html');
+        Main.window.on('closed', Main.onClose);
     };
     Main.main = function (app, browserWindow) {
         Main.BrowserWindow = browserWindow;

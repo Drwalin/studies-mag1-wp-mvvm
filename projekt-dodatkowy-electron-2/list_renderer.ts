@@ -25,7 +25,6 @@ function CreateHeaderRow(use_sort: boolean) {
 	return CreateRow("th",
 		use_sort ?
 		(id:string)=>{
-			console.log("click: " + id);
 			con.send("command_sort", id);
 		} : null,
 		["PID","PID"],
@@ -39,15 +38,18 @@ function RenderList(lst: any[], listBoxId: string) {
 	var table = document.getElementById(listBoxId);
 	var children: (string|Node)[] = [];
 	
-	children.push(CreateHeaderRow(listBoxId=="main_list"));
+	var head = Elem("thead", CreateHeaderRow(listBoxId=="main_list"));
+
 	lst.forEach((value:any)=>{
-		var row = CreateRow("td", null, [value.pid], [value.name], [value.time], [value.memory]);
+		var row = CreateRow("td", null, [value.pid], [value.name], [value.time<0?"":value.time], [value.memory<0?"":value.memory]);
 		row.onclick = ()=>{
-			console.log("click pid: " + value.pid);
 			con.send("choose_process", +value.pid);
 		};
 		children.push(row);
 	});
+	
 
-	table.replaceChildren(...children);
+	table.replaceChildren(head, Elem("tbody", ...children));
 }
+RenderList([], "main_list");
+RenderList([], "child_list");

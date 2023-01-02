@@ -1,14 +1,44 @@
+div {
+	display: fixed;
+}
+
+body {
+	background-color: #191919;
+	color: #ccc;
+	scrollbar-color: #aaa #111;
+}
+
+div, body, html {
+	overflow-x: hidden;
+	overflow-x: hidden;
+	overflow: hidden;
+}
+
+body, html {
+	width: 100vw;
+	height: 100vh;
+}
+
+body > div {
+	width: 100vw;
+	height: 100vh;
+}
+
+
+
+
 table {
+	top: 0;
 	overflow-y: scroll;
 	overflow-x: scroll;
 	overflow: scroll;
 	border-collapse: collapse;
 	border: 1px solid;
 	display: block;
-	width: 100%-10px;
-	height: 100%;
+	width: 100%;
 	margin: 0;
 	padding: 0;
+	bottom: 0;
 }
 
 tr {
@@ -17,8 +47,8 @@ tr {
 th {
 	width: fit-content;
 }
-tr th:first-child {
-	width: 100%;
+thead th {
+	position: sticky;
 }
 
 th, tr, td {
@@ -26,7 +56,10 @@ th, tr, td {
 	border: 1px solid;
 }
 
-div {
-	display: auto;
+tr > th:nth-of-type(2) {
+	width: 100%;
 }
+
+
+
 

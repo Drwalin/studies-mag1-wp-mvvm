@@ -36,22 +36,22 @@ function CreateRow(type, onpresselem) {
 function CreateHeaderRow(use_sort) {
     return CreateRow("th", use_sort ?
         function (id) {
-            console.log("click: " + id);
             con.send("command_sort", id);
         } : null, ["PID", "PID"], ["Name", "Name"], ["CPU Time [s]", "Time"], ["Memory [B]", "Memory"]);
 }
 function RenderList(lst, listBoxId) {
     var table = document.getElementById(listBoxId);
     var children = [];
-    children.push(CreateHeaderRow(listBoxId == "main_list"));
+    var head = Elem("thead", CreateHeaderRow(listBoxId == "main_list"));
     lst.forEach(function (value) {
-        var row = CreateRow("td", null, [value.pid], [value.name], [value.time], [value.memory]);
+        var row = CreateRow("td", null, [value.pid], [value.name], [value.time < 0 ? "" : value.time], [value.memory < 0 ? "" : value.memory]);
         row.onclick = function () {
-            console.log("click pid: " + value.pid);
             con.send("choose_process", +value.pid);
         };
         children.push(row);
     });
-    table.replaceChildren.apply(table, children);
+    table.replaceChildren(head, Elem.apply(void 0, __spreadArray(["tbody"], children, false)));
 }
+RenderList([], "main_list");
+RenderList([], "child_list");
 //# sourceMappingURL=list_renderer.js.map

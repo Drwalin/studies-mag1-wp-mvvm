@@ -36,11 +36,8 @@ public class CommandPriorityChange : ListViewCommandBase {
 
 				viewModelProcessList.UpdateProcessPriority();
 			} catch {
-				/*
-				MessageBox.Show(Application.Current.MainWindow,
-					"Access denied to change priority: "
-					+ viewModelProcessList.Process?.ProcessName);
-					*/
+				MessageBox.Show("Access denied to change priority: "
+					+ viewModelProcessList.process?.ProcessName);
 			}
 		}
 	}

@@ -4,48 +4,45 @@
 		<link rel="stylesheet" type="text/css" href="style.css" />
 	</head>
 	<body>
-		<div style="width:50vw; left:0; top:0;" id="div_left">
+		<div style="width:50vw; height:100vh; left:0; top:0;" id="div_left">
 			<div id="div_left_up" style="height:auto; top:0;">
-				<input id="filter_text_input">
+				<input id="filter_text_input" type="text">
 				<button id="refresh_button">Refresh</button>
 				<button id="auto_refresh_toggle_button">Auto refresh: true</button>
 				<div>
 					Refresh rate [s]:
-					<input id="refresh_rate_value_input" min="1" max="60" step="1" value="1">
-					<button id="increment_referesh_rate_button">+</button>
-					<button id="decrement_referesh_rate_button">-</button>
+					<input id="refresh_rate_value_input" type="number" min="1" max="60" step="1" value="1">
 				</div>
 			</div>
-			<div id="div_left_down" style="height:auto; bottom:0vh; padding: 8px 20px 8px 0; left: 0;">
-				<table id="main_list">
-					<tr><th>Company</th><th>Contact</th><th>Country</th></tr><tr><td>Alfreds Futterkiste</td><td>Maria Anders</td><td>Germany</td></tr><tr><td>Centro comercial Moctezuma</td><td>Francisco Chang</td><td>Mexico</td></tr>
+			<div id="div_left_down" style="width:50vw; height: calc(100vh-56px); bottom:0; left: 0; right: 50vw; top: 56px; position:absolute;">
+				<table id="main_list" style="height: 100%; width:100%; bottom: 0; top: 0; left: 0; right: 0">
 				</table>
 			</div>
 		</div>
-		<div style="width:50vw; position:fixed; right: 0; left: auto; top:0;" id="div_right">
+		<div style="width:50vw; height:100vh; position:fixed; right: 0; left: auto; top:0;" id="div_right">
 			<div id="div_right_up" style="height:auto; top:0;">
 				<div style="width:30%; top:0;" id="selected_process_name">
 				</div>
 				<div style="width:15%; top:0;" id="selected_process_pid">
 				</div>
-				<button style="width:15%; right:40%; top:0;" id="kill_process_button" disabled="true">
+				<button style="width:15%; left:45%; right:40%; top:0;" id="kill_process_button" disabled="true">
 					Kill
 				</button>
-				<button style="width:40%; left:auto; right:0; top:0;" id="process_priority_button" disabled="true">
+				<button style="width:40%; left:60%; right:0; top:0;" id="priority_process_button" disabled="true">
 					Priority:
 					<div id="process_priority_string">
 						fdsf
 					</div>
 				</button>
 			</div>
-			<div id="div_right_down" style="height:auto; bottom:0; padding: 8px;">
-				<table id="child_list">
-					<tr><th>Company</th><th>Contact</th><th>Country</th></tr><tr><td>Alfredsfdhjklsfjdksfajkdfja;fdfl;as;kfdaskl;fjkladjks;lafjk Futterkiste</td><td>Maria Anders</td><td>Germany</td></tr><tr><td>Centro comercial Moctezuma</td><td>Francisco Chang</td><td>Mexico</td></tr>
+			<div id="div_right_down" style="height: 50vh; width:50vw; bottom:0; top: 50vh; position:absolute;">
+				<table id="child_list" style="height: 100%; width:100%; bottom: 0; top: 0; left: 0; right: 0">
 				</table>
 			</div>
 		</div>
 	</body>
 	<script src="dist/init_con.js" > </script>
 	<script src="dist/list_renderer.js" > </script>
-	<script src="dist/renderer.js" > </script>
+	<script src="dist/events.js" > </script>
+	<script src="dist/interactions.js" > </script>
 </html>
