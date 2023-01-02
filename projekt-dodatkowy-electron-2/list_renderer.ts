@@ -30,7 +30,7 @@ function CreateHeaderRow(use_sort: boolean) {
 		["PID","PID"],
 		["Name","Name"],
 		["CPU Time [s]","Time"],
-		["Memory [B]","Memory"]
+		["Memory [KiB]","Memory"]
 	);
 }
 
@@ -41,7 +41,7 @@ function RenderList(lst: any[], listBoxId: string) {
 	var head = Elem("thead", CreateHeaderRow(listBoxId=="main_list"));
 
 	lst.forEach((value:any)=>{
-		var row = CreateRow("td", null, [value.pid], [value.name], [value.time<0?"":value.time], [value.memory<0?"":value.memory]);
+		var row = CreateRow("td", null, [value.pid], [value.name], [value.time<0?"":value.time], [value.memory<0?"":""+((+value.memory)/1024)]);
 		row.onclick = ()=>{
 			con.send("choose_process", +value.pid);
 		};

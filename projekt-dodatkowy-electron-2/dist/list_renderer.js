@@ -37,14 +37,14 @@ function CreateHeaderRow(use_sort) {
     return CreateRow("th", use_sort ?
         function (id) {
             con.send("command_sort", id);
-        } : null, ["PID", "PID"], ["Name", "Name"], ["CPU Time [s]", "Time"], ["Memory [B]", "Memory"]);
+        } : null, ["PID", "PID"], ["Name", "Name"], ["CPU Time [s]", "Time"], ["Memory [KiB]", "Memory"]);
 }
 function RenderList(lst, listBoxId) {
     var table = document.getElementById(listBoxId);
     var children = [];
     var head = Elem("thead", CreateHeaderRow(listBoxId == "main_list"));
     lst.forEach(function (value) {
-        var row = CreateRow("td", null, [value.pid], [value.name], [value.time < 0 ? "" : value.time], [value.memory < 0 ? "" : value.memory]);
+        var row = CreateRow("td", null, [value.pid], [value.name], [value.time < 0 ? "" : value.time], [value.memory < 0 ? "" : "" + ((+value.memory) / 1024)]);
         row.onclick = function () {
             con.send("choose_process", +value.pid);
         };

@@ -21,15 +21,23 @@
 		</div>
 		<div style="width:50vw; height:100vh; position:fixed; right: 0; left: auto; top:0;" id="div_right">
 			<div id="div_right_up" style="height:auto; top:0;">
-				<div style="max-width:30%; top:0; display:relative;" id="selected_process_name">
-				</div>
-				<div style="max-width:15%; top:0; display:relative;" id="selected_process_pid">
+				<div>
+					Selected process name:
+					<label id="selected_process_name">
+					</label>
 				</div>
 				<div>
-					<button style="width:15%; left:45%; right:40%; top:0;" id="kill_process_button" disabled="true">
+					Selected process PID:
+					<label id="selected_process_pid">
+					</label>
+				</div>
+				<div>
+					<button id="kill_process_button" disabled="true">
 						Kill
 					</button>
-					<button style="width:40%; left:60%; right:0; top:0;" id="priority_process_button" disabled="true">
+				</div>
+				<div>
+					<button id="priority_process_button" disabled="true">
 						Priority:
 						<div id="process_priority_string">
 							fdsf
