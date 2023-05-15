@@ -68,9 +68,6 @@ namespace samotnik {
 		}
 
 
-		public ICommand CommandUndo { get; set; }
-		public ICommand CommandReset { get; set; }
-
 		private void UndoCommand_Executed(object sender, ExecutedRoutedEventArgs e) {
 			gameBoard.UndoMove();
 		}

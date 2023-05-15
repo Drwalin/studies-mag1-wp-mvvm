@@ -6,16 +6,30 @@
 	<body>
 		<div style="width:50vw; height:100vh; left:0; top:0;" id="div_left">
 			<div id="div_left_up" style="height:auto; top:0;">
-				<input id="filter_text_input" type="text">
-				<button id="refresh_button">Refresh</button>
-				<button id="auto_refresh_toggle_button">Auto refresh: true</button>
-				<div>
-					Refresh rate [s]:
-					<input id="refresh_rate_value_input" type="number" min="1" max="60" step="1" value="1">
-				</div>
+				<table style="border:none; margin:0; padding:0; top: 0; left: 0; position: fixed;">
+					<tr style="border:none; margin:0; padding:0;">
+						<td style="width:25vw;">
+							Filter: <input id="filter_text_input" type="text" style="max-width:15vw">
+						</td>
+						<td style="width:25vw;">
+							<button id="auto_refresh_toggle_button" style="max-width:15vw">Auto refresh: true</button>
+						</td>
+					</tr>
+					<tr style="border:none; margin:0; padding:0;">
+						<td>
+							<button id="refresh_button" style="max-width:10vw">Refresh</button>
+						</td>
+						<td>
+							<!--<div style="top: 0; max-width:15vh;">-->
+								Refresh rate [s]:
+								<input id="refresh_rate_value_input" type="number" min="1" max="60" step="1" value="1">
+							<!--</div>-->
+						</td>
+					</tr>
+				</table>
 			</div>
 			<div id="div_left_down" style="width:50vw; height: calc(100vh-56px); bottom:0; left: 0; right: 50vw; top: 56px; position:absolute;">
-				<table id="main_list" style="height: 100%; width:100%; bottom: 0; top: 0; left: 0; right: 0">
+				<table id="main_list" class="tableprocess" style="height: 100%; width:100%; bottom: 0; top: 0; left: 0; right: 0">
 				</table>
 			</div>
 		</div>
@@ -46,7 +60,7 @@
 				</div>
 			</div>
 			<div id="div_right_down" style="height: 50vh; width:50vw; bottom:0; top: 50vh; position:absolute;">
-				<table id="child_list" style="height: 100%; width:100%; bottom: 0; top: 0; left: 0; right: 0">
+				<table id="child_list" class="tableprocess" style="height: 100%; width:100%; bottom: 0; top: 0; left: 0; right: 0">
 				</table>
 			</div>
 		</div>
