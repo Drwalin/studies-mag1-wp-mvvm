@@ -21,6 +21,7 @@ namespace samotnik {
 			}
 			
 			gameBoard.InitMap(InitialMapState.defaultMap);
+			this.CommandUndo = new samotnik.CommandUndo(gameBoard);
 
 			CreateWindowMenu();
 
@@ -67,16 +68,17 @@ namespace samotnik {
 			}
 		}
 
-
 		public ICommand CommandUndo { get; set; }
-		public ICommand CommandReset { get; set; }
+		//public ICommand CommandReset_ { get; set; }
 
 		private void UndoCommand_Executed(object sender, ExecutedRoutedEventArgs e) {
-			gameBoard.UndoMove();
+			CommandUndo.Execute(sender);
+			//gameBoard.UndoMove();
 		}
 
 		private void UndoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
-			e.CanExecute = gameBoard.CanUndo();
+			//e.CanExecute = gameBoard.CanUndo();
+			e.CanExecute = CommandUndo.CanExecute(sender);
 		}
 
 		private void ResetCommand_Executed(object sender, ExecutedRoutedEventArgs e) {

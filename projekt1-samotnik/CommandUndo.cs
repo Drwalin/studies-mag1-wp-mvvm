@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace samotnik; 
 
-public abstract class CommandUndo : ICommand {
+public class CommandUndo : ICommand {
 	protected readonly GameBoard gameBoard;
 
 	public CommandUndo(GameBoard gameBoard) {
@@ -14,6 +14,7 @@ public abstract class CommandUndo : ICommand {
 		if(gameBoard != null) {
 			return gameBoard.CanUndo();
 		}
+		//throw new Exception("CommandUndo execut null gameboard");
 		return false;
 	}
 	
@@ -21,6 +22,7 @@ public abstract class CommandUndo : ICommand {
 		if(gameBoard != null) {
 			gameBoard.UndoMove();
 		}
+		//throw new Exception("CommandUndo execut null gameboard");
 	}
 	
 	public event EventHandler? CanExecuteChanged;
