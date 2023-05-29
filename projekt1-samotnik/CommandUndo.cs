@@ -4,25 +4,23 @@ using System.Windows.Input;
 namespace samotnik; 
 
 public class CommandUndo : ICommand {
-	protected readonly GameBoard gameBoard;
+	private readonly HistoryManager historyManager;
 
-	public CommandUndo(GameBoard gameBoard) {
-		this.gameBoard = gameBoard;
+	public CommandUndo(HistoryManager _historyManager) {
+		this.historyManager = _historyManager;
 	}
 
 	public virtual bool CanExecute(object? parameter) {
-		if(gameBoard != null) {
-			return gameBoard.CanUndo();
+		if(historyManager != null) {
+			return historyManager.CanRevertHistory();
 		}
-		//throw new Exception("CommandUndo execut null gameboard");
 		return false;
 	}
 	
 	public virtual void Execute(object? parameter) {
-		if(gameBoard != null) {
-			gameBoard.UndoMove();
+		if(historyManager != null) {
+			historyManager.RevertHistory();
 		}
-		//throw new Exception("CommandUndo execut null gameboard");
 	}
 	
 	public event EventHandler? CanExecuteChanged;

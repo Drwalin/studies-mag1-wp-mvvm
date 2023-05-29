@@ -7,22 +7,21 @@ using System.Windows.Media.Animation;
 namespace samotnik; 
 
 public partial class GameBoard {
-	
-	struct PawnPair {
-		public PawnPlace from, to;
-		public PawnPlace? middle;
-	}
-
 	private PawnPlace?[,] pawns;
 	private readonly Grid grid;
-	private readonly List<PawnPair> history = new();
 	private InitialMapState lastStartedGameMap = InitialMapState.defaultMap;
+	private HistoryManager historyManager;
+	
+	public HistoryManager GetHistoryManager() {
+		return historyManager;
+	}
 
 	public GameBoard() {
 		InitializeComponent();
 		grid = new Grid();
 		Content = grid;
 		grid.ShowGridLines = true;
+		historyManager = new HistoryManager(this);
 	}
 
 	public void ResetGame() {
@@ -31,7 +30,6 @@ public partial class GameBoard {
 
 	public void InitMap(InitialMapState initialState) {
 		lastStartedGameMap = initialState;
-		history.Clear();
 		grid.Children.Clear();
 		grid.RowDefinitions.Clear();
 		grid.ColumnDefinitions.Clear();
@@ -83,7 +81,7 @@ public partial class GameBoard {
 		int y = (to.y + from.y) / 2;
 		PawnPlace? middle = pawns[x, y];
 		if(middle != null && middle.GetEnabled()) {
-			history.Add(new PawnPair { from = from, to = to, middle = middle });
+			historyManager.PushStateChange( new PawnPair { from = from, to = to, middle = middle });
 			middle.SetEnabled(false);
 			PlayAnimation(from, to);
 			lastClickedPawn = null;
@@ -116,23 +114,14 @@ public partial class GameBoard {
 		storyboard.Begin();
 	}
 
-	public void UndoMove() {
-		if(history.Count > 0) {
-			var last = history[^1];
-			last.to.SetEnabled(false);
-			last.from.SetEnabled(true);
-			last.middle?.SetEnabled(true);
-			if(lastClickedPawn == last.to || lastClickedPawn == last.from
-			                              || lastClickedPawn == last.middle) {
-				lastClickedPawn = null;
-			}
-
-			history.Remove(last);
+	public void UndoMove(PawnPair delta) {
+		delta.to.SetEnabled(false);
+		delta.from.SetEnabled(true);
+		delta.middle?.SetEnabled(true);
+		if(lastClickedPawn == delta.to || lastClickedPawn == delta.from
+				|| lastClickedPawn == delta.middle) {
+			lastClickedPawn = null;
 		}
-	}
-
-	public bool CanUndo() {
-		return history.Count > 0;
 	}
 
 

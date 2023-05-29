@@ -21,7 +21,8 @@ namespace samotnik {
 			}
 			
 			gameBoard.InitMap(InitialMapState.defaultMap);
-			this.CommandUndo = new samotnik.CommandUndo(gameBoard);
+			this.CommandUndo = new samotnik.CommandUndo(
+					gameBoard.GetHistoryManager());
 
 			CreateWindowMenu();
 
